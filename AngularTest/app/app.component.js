@@ -9,30 +9,55 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var hero_detail_component_1 = require('./hero-detail.component');
-var hero_service_1 = require('./hero.service');
-var AppComponent = (function () {
-    function AppComponent(heroService) {
-        this.heroService = heroService;
-        this.title = 'Tour of Heroes';
+var ChildComponent1 = (function () {
+    function ChildComponent1() {
     }
-    AppComponent.prototype.getHeroes = function () {
-        var _this = this;
-        this.heroService.getHeroes().then(function (heroes) { return _this.heroes = heroes; });
-    };
+    ChildComponent1 = __decorate([
+        core_1.Component({
+            selector: 'compo1',
+            template: '<h1>Este es el componente <b>UNO</b > </h1>'
+        }), 
+        __metadata('design:paramtypes', [])
+    ], ChildComponent1);
+    return ChildComponent1;
+}());
+var ChildComponent2 = (function () {
+    function ChildComponent2() {
+    }
+    ChildComponent2 = __decorate([
+        core_1.Component({
+            selector: 'compo2',
+            template: '<h1>Este es el componente <b>DOS</b > </h1>'
+        }), 
+        __metadata('design:paramtypes', [])
+    ], ChildComponent2);
+    return ChildComponent2;
+}());
+var AppComponent = (function () {
+    function AppComponent(dcl, injector) {
+        this.dcl = dcl;
+        this.injector = injector;
+        this.v = 0;
+    }
     AppComponent.prototype.ngOnInit = function () {
-        this.getHeroes();
+        var _this = this;
+        setInterval(function () {
+            if (_this.v % 2 == 0) {
+                _this.dcl.loadAsRoot(ChildComponent1, '#child', _this.injector);
+            }
+            else {
+                _this.dcl.loadAsRoot(ChildComponent2, '#child', _this.injector);
+            }
+            _this.v++;
+            console.log(_this.v);
+        }, 1000);
     };
-    AppComponent.prototype.onSelect = function (hero) { this.selectedHero = hero; };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n    <h1>{{title}}</h1>\n    <h2>My Heroes</h2>\n    <ul class=\"heroes\">\n      <li *ngFor=\"let hero of heroes\"\n        [class.selected]=\"hero === selectedHero\"\n        (click)=\"onSelect(hero)\">\n        <span class=\"badge\">{{hero.id}}</span> {{hero.name}}\n      </li>\n    </ul>\n    <my-hero-detail [hero]=\"selectedHero\"></my-hero-detail>\n  ",
-            styles: ["\n    .selected {\n      background-color: #CFD8DC !important;\n      color: white;\n    }\n    .heroes {\n      margin: 0 0 2em 0;\n      list-style-type: none;\n      padding: 0;\n      width: 15em;\n    }\n    .heroes li {\n      cursor: pointer;\n      position: relative;\n      left: 0;\n      background-color: #EEE;\n      margin: .5em;\n      padding: .3em 0;\n      height: 1.6em;\n      border-radius: 4px;\n    }\n    .heroes li.selected:hover {\n      background-color: #BBD8DC !important;\n      color: white;\n    }\n    .heroes li:hover {\n      color: #607D8B;\n      background-color: #DDD;\n      left: .1em;\n    }\n    .heroes .text {\n      position: relative;\n      top: -3px;\n    }\n    .heroes .badge {\n      display: inline-block;\n      font-size: small;\n      color: white;\n      padding: 0.8em 0.7em 0 0.7em;\n      background-color: #607D8B;\n      line-height: 1em;\n      position: relative;\n      left: -1px;\n      top: -4px;\n      height: 1.8em;\n      margin-right: .8em;\n      border-radius: 4px 0 0 4px;\n    }\n  "],
-            directives: [hero_detail_component_1.HeroDetailComponent],
-            providers: [hero_service_1.HeroService]
+            template: '<div id="child"></div>'
         }), 
-        __metadata('design:paramtypes', [hero_service_1.HeroService])
+        __metadata('design:paramtypes', [core_1.DynamicComponentLoader, core_1.Injector])
     ], AppComponent);
     return AppComponent;
 }());
